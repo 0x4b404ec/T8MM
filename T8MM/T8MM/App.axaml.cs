@@ -1,5 +1,7 @@
 using System;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -24,6 +26,9 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
+        
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var viewLocalor = m_provider?.GetRequiredService<IDataTemplate>();

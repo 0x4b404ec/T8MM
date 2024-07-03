@@ -30,9 +30,24 @@
         <DependentUpon>MainWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Localization\Resources.Designer.cs">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Models\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Localization\Resources.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Localization\Resources.en-us.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Localization\Resources.zh-hans.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
     </ItemGroup>
 </Project>

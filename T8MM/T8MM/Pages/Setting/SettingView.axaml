@@ -2,40 +2,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            
              xmlns:vm="clr-namespace:T8MM.Pages.Setting"
              xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:localization="using:T8MM.Localization"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="T8MM.Pages.Setting.SettingView"
              x:DataType="vm:SettingViewModel">
     
     <Grid RowDefinitions="Auto, *" Margin="20">
-        <TextBlock Classes="h1" Text="Settings"/>
+        <TextBlock Classes="h1" Text="{x:Static localization:Resources.KEY_SETTINGS}"/>
         
         
         <ScrollViewer Grid.Row="1">
-            <Grid RowDefinitions="Auto, Auto">
+            <Grid RowDefinitions="Auto, Auto, Auto">
                 <Grid.Styles>
                     <Style Selector="controls|GlassCard">
                         <Setter Property="Margin" Value="0, 10"></Setter>
                     </Style>
-                    <Style Selector="TextBlock">
-                        <Setter Property="FontSize" Value="25"></Setter>
-                    </Style>
                 </Grid.Styles>
                 <controls:GlassCard>
-                    <controls:GroupBox Header="Language">
-                        <ComboBox ItemsSource="{Binding SupportLanguages}" 
-                                  SelectedItem="{Binding SelectedLanguageItem}">
+                    <controls:GroupBox Header="{x:Static localization:Resources.KEY_LANGUAGE}">
+                        <ComboBox Name="LanguageComboBox"
+                                  Width="256"
+                                  HorizontalAlignment="Left"
+                                  ItemsSource="{Binding SupportLanguages}" 
+                                  SelectedItem="{Binding SelectedLanguageItem}">s
                             <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Key}"/>
+                                <DataTemplate DataType="vm:Language">
+                                    <TextBlock Text="{Binding DisplayName}"></TextBlock>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                     </controls:GroupBox>
                 </controls:GlassCard>
-                <controls:GlassCard Grid.Row="1">
                 
+                <controls:GlassCard Grid.Row="1">
+                    <controls:GroupBox Header="{x:Static localization:Resources.KEY_USER_API}">
+                        <TextBox Text="{Binding UserApiKey}"></TextBox>
+                    </controls:GroupBox>
+                </controls:GlassCard>
+                
+                <controls:GlassCard Grid.Row="2">
+                    <controls:GroupBox Header="{x:Static localization:Resources.KEY_GAME_ROOT_FOLDER}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBox Text="{Binding GameRootFolder}" Watermark="{x:Static localization:Resources.KEY_GAME_ROOT_FOLDER_TIPS}" />
+                            <Button Grid.Column="1" 
+                                    Classes="Basic"
+                                    Command="{Binding FindTekken8ExeCommand}">
+                                <avalonia:MaterialIcon Kind="Folder" />
+                            </Button>
+                        </Grid>
+                    </controls:GroupBox>
                 </controls:GlassCard>
             </Grid>
         </ScrollViewer>
