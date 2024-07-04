@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using System;
-using Avalonia.Logging;
 
 namespace T8MM;
 
@@ -18,5 +17,5 @@ sealed class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace(LogEventLevel.Verbose);
+            .LogToTrace();
 }
