@@ -29,4 +29,10 @@
     <data name="KEY_GAME_ROOT_FOLDER_TIPS" xml:space="preserve">
         <value>游戏根路径</value>
     </data>
+    <data name="KEY_REFRESH" xml:space="preserve">
+        <value>刷新</value>
+    </data>
+    <data name="KEY_LOADING" xml:space="preserve">
+        <value>加载中...</value>
+    </data>
 </root>

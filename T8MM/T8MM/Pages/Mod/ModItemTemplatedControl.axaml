@@ -1,0 +1,25 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+        xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+        xmlns:controls="using:T8MM.Pages.Mod">
+    <Design.PreviewWith>
+        <controls:ModItemTemplatedControl />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|ModItemTemplatedControl">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ui:GlassCard Margin="0, 10" IsInteractive="True">
+                    <!-- <ui:GroupBox Header="{Binding Name}"> -->
+                    <!--     <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,*"> -->
+                    <!--         <TextBox Grid.Column="1" Text="{Binding Author}"></TextBox>     -->
+                    <!--     </Grid> -->
+                    <!-- </ui:GroupBox> -->
+                </ui:GlassCard>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>
+    

@@ -397,3 +397,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 T8MM/.idea/
+T8MM/T8MM/mods/*.rar
+T8MM/T8MM/mods/*.zip

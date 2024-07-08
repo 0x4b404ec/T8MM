@@ -36,4 +36,10 @@
     <data name="KEY_GAME_ROOT_FOLDER_TIPS" xml:space="preserve">
         <value>The game root folder.</value>
     </data>
+    <data name="KEY_REFRESH" xml:space="preserve">
+        <value>Refresh</value>
+    </data>
+    <data name="KEY_LOADING" xml:space="preserve">
+        <value>Loading...</value>
+    </data>
 </root>
