@@ -2,33 +2,24 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+      mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
       xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
       xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
       x:Class="T8MM.Pages.Splash.SplashScreenView"
       xmlns:vm="clr-namespace:T8MM.Pages.Splash"
       x:DataType="vm:SplashScreenViewMode"
+      ExtendClientAreaTitleBarHeightHint="0"
       WindowStartupLocation="CenterScreen"
-      SystemDecorations="None" Topmost="True"
+      IsTitleBarVisible="False"
       Title="SplashScreen">
-    
-        <Border BorderBrush="Black" BorderThickness="2">
-                <Grid RowDefinitions="*, Auto" ColumnDefinitions="*, Auto">
-                        <Label Grid.Row="0" 
-                               Grid.Column="0"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center">
-                                Launching Application...
-                        </Label>
-                        <Label Grid.Row="1" 
-                               Grid.Column="0"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Content="{Binding StartupMessage}"/>
-                        <Button Grid.Row="1"
-                                Grid.Column="1"
-                                Command="{Binding Cancel}"></Button>
-                </Grid>
-        </Border>
+      
+      <Grid RowDefinitions="*,Auto,Auto">
+            <Image VerticalAlignment="Center" Width="400" Grid.Row="0" Source="avares://T8MM/Assets/tekken_8_logo.png"/>
+            <TextBlock Grid.Row="1" Text="{Binding StartupMessage}"/>
+            <ProgressBar Grid.Row="2" Margin="20" Value="{Binding ProgressValue}" IsIndeterminate="False"/>
+              
+      </Grid>
+      
+      
         
 </suki:SukiWindow>

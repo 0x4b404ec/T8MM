@@ -42,4 +42,7 @@
     <data name="KEY_LOADING" xml:space="preserve">
         <value>Loading...</value>
     </data>
+    <data name="KEY_SAVE_BUTTON" xml:space="preserve">
+        <value>Save</value>
+    </data>
 </root>

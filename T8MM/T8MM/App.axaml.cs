@@ -12,26 +12,29 @@ using Microsoft.Extensions.DependencyInjection;
 using T8MM.Pages;
 using T8MM.Pages.Splash;
 using T8MM.Services;
+using T8MM.Utils;
 
 namespace T8MM;
 
-public partial class App : Application
+public class App : Application
 {
     private const string DOMAIN = "https://api.nexusmods.com";
 
     private const string API_KEY = "w0nX2W12v7eSd9Q2VbDqOFPacvl0vRYkduur+/8l4+DEYvs=--5dDZNKVaYSndbkP5--aCMUTPQjI/UolxlVL6uCdQ==";
     
-    private IServiceProvider? m_provider;
+    public static IServiceProvider? Provider;
     
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
         
-        m_provider = ConfigureServices();
+        Provider = ConfigureServices();
     }
 
     public override async void OnFrameworkInitializationCompleted()
     {
+        
+        
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
         
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -46,10 +49,17 @@ public partial class App : Application
                 splashScreenViewModel.StartupMessage = "Reading Local Config...";
                 await Task.Run(() =>
                 {
-                    
+                    var language = Provider.GetService<IAppSettingService>().AppSettings.Language;
+                    Debug.Log($"Settings Language {language}");
+                    Localization.Resources.Culture = new CultureInfo(language);
+                    splashScreenViewModel.ProgressValue = 10;
                 }, splashScreenViewModel.CancellationToken);
                 
                 splashScreenViewModel.StartupMessage = "Application Initializing...";
+                
+                
+                
+                
                 await Task.Delay(2000, splashScreenViewModel.CancellationToken);
                 
             }   
@@ -59,8 +69,8 @@ public partial class App : Application
                 return;
             }
             
-            var viewLocalor = m_provider?.GetRequiredService<IDataTemplate>();
-            var mainViewModel = m_provider?.GetRequiredService<T8MMViewModel>();
+            var viewLocalor = Provider?.GetRequiredService<IDataTemplate>();
+            var mainViewModel = Provider?.GetRequiredService<T8MMViewModel>();
 
             desktop.MainWindow = viewLocalor?.Build(mainViewModel) as Window;
             desktop.MainWindow.Show();
@@ -75,7 +85,10 @@ public partial class App : Application
     {
         var viewLocator = Current?.DataTemplates.First(x => x is ViewLocator);
         var services = new ServiceCollection();
+
+        services.AddSingleton<IAppSettingService, AppSettingService>();
         
+        // Protocol
         services.AddHttpClient<IProtocolService, ProtocolService>(httpClient => httpClient.BaseAddress = new Uri(DOMAIN));
         
         // Services

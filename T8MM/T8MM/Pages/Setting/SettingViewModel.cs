@@ -8,6 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Collections;
@@ -17,6 +19,9 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Material.Icons;
+using Microsoft.Extensions.DependencyInjection;
+using T8MM.Services;
+using T8MM.Utils;
 
 namespace T8MM.Pages.Setting;
 
@@ -26,7 +31,7 @@ public partial class Language(string displayName, string code) : ObservableObjec
     [ObservableProperty] private string m_code = code;
 }
 
-public partial class SettingViewModel() : PageBase("Settings", MaterialIconKind.Settings)
+public partial class SettingViewModel : PageBase
 {
     public ObservableCollection<Language> SupportLanguages { get; } =
     [
@@ -35,12 +40,66 @@ public partial class SettingViewModel() : PageBase("Settings", MaterialIconKind.
     ];
     
     [ObservableProperty] private string? m_userApiKey;
+    [ObservableProperty] private bool m_hasUserApiKey;
     
-    [ObservableProperty] private string? m_selectedLanguageItem;
+    [ObservableProperty] private int? m_selectedLanguageIndex;
 
     [ObservableProperty] private string? m_gameRootFolder;
+
+    [ObservableProperty] private bool m_hasParamChanged;
     
+    private IAppSettingService m_appSettingService;
     
+    public SettingViewModel() : base("Settings", MaterialIconKind.Settings)
+    {
+        m_appSettingService = App.Provider.GetService<IAppSettingService>();
+
+        if (m_appSettingService != null)
+        {
+            SelectedLanguageIndex = m_appSettingService.AppSettings.Language;
+            UserApiKey = m_appSettingService.AppSettings.UserApiKey;
+            HasUserApiKey = !string.IsNullOrEmpty(m_userApiKey);
+            GameRootFolder = m_appSettingService.AppSettings.GamePath;
+        }
+    }
+
+    partial void OnSelectedLanguageIndexChanged(int? value)
+    {
+        Debug.Log($"OnSelectedLanguageItemChanged {value}");
+        CheckHasParamChanged();
+    }
+
+    partial void OnUserApiKeyChanged(string? value)
+    {
+        Debug.Log($"OnUserApiKeyChanged {value}");
+        CheckHasParamChanged();
+        // TODO : Check with protocol
+        HasUserApiKey = !string.IsNullOrEmpty(m_userApiKey);
+    }
+    
+    partial void OnGameRootFolderChanged(string? value)
+    {
+        Debug.Log($"OnGameRootFolderChanged {value}");
+        CheckHasParamChanged();
+    }
+
+    private void CheckHasParamChanged()
+    {
+         HasParamChanged = m_appSettingService.AppSettings.Language != SelectedLanguageIndex ||
+                           m_appSettingService.AppSettings.GamePath != GameRootFolder ||
+                           m_appSettingService.AppSettings.UserApiKey != UserApiKey;
+    }
+    
+    [RelayCommand]
+    private void SaveButtonClicked()
+    {
+        m_appSettingService.AppSettings.Language = SelectedLanguageIndex.Value;
+        m_appSettingService.AppSettings.GamePath = GameRootFolder;
+        m_appSettingService.AppSettings.UserApiKey = UserApiKey;
+        m_appSettingService.Save();
+        CheckHasParamChanged();
+    }
+
     [RelayCommand]
     private async Task FindTekken8Exe()
     {

@@ -92,5 +92,11 @@ namespace T8MM.Localization {
                 return ResourceManager.GetString("KEY_LOADING", resourceCulture);
             }
         }
+        
+        public static string KEY_SAVE_BUTTON {
+            get {
+                return ResourceManager.GetString("KEY_SAVE_BUTTON", resourceCulture);
+            }
+        }
     }
 }

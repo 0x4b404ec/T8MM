@@ -14,6 +14,9 @@ namespace T8MM.Pages.Splash;
 public partial class SplashScreenViewMode : ViewModelBase
 {
     [ObservableProperty]
+    private int m_progressValue;
+    
+    [ObservableProperty]
     private string m_startupMessage = "Starting application...";
 
     private readonly CancellationTokenSource m_cts = new();
