@@ -84,6 +84,10 @@ public static class FileUtils
 	
 	public static void WriteAllText(string path, string contents, Encoding encoding)
 	{
+		FileInfo fi = new FileInfo(path);
+		var di = fi.Directory;
+		if (!di.Exists)
+			di.Create();
 		using var streamWriter = new StreamWriter(path, false, encoding);
 		streamWriter.Write(contents);
 	}

@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Material.Icons;
 using T8MM.Global;
@@ -28,8 +29,18 @@ public partial class ModViewModel : PageBase
     public ModViewModel(IProtocolService protocolService) : base("Mods", MaterialIconKind.ModeEdit)
     {
         m_protocolService = protocolService;
-        _ = ModRefresh();
+        
+        
+        //_ = ModRefresh();
     }
+
+    [RelayCommand]
+    private async Task GetModInfoTest()
+    {
+        var result = await Ioc.Default.GetRequiredService<IProtocolService>().RetrieveSpecifiedMod("tekken8", 255);
+        Debug.Log($"mod info {result.Name}");
+    }
+    
     
     [RelayCommand]
     private async Task ModRefresh()
@@ -58,7 +69,7 @@ public partial class ModViewModel : PageBase
                 
                 Debug.Log($"Get mod file {infoFilePath}");
                 
-                if (m_protocolService.IsValidatedUser)
+                if (Ioc.Default.GetRequiredService<IProtocolService>().IsValidatedUser)
                 {
                     if (info is null || !info.IsDataFromWeb)
                     {
@@ -89,11 +100,11 @@ public partial class ModViewModel : PageBase
         ModInfoResult? ret = new();
         ModUtils.GetBasicInfoByPackage(fileName, out string modName, out int id, out string version, out string updateTime);
 
-        var result = await m_protocolService.RetrieveSpecifiedMod("tekken8", id);
+        var result = Ioc.Default.GetRequiredService<IProtocolService>().RetrieveSpecifiedMod("tekken8", id);
 
-        if (result is not null)
+        if (result.Result is not null)
         {
-            ret = result;
+            ret = result.Result;
             ret.IsDataFromWeb = true;
         }
         else

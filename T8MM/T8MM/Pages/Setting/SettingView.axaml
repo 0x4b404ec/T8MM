@@ -12,12 +12,13 @@
              x:Class="T8MM.Pages.Setting.SettingView"
              x:DataType="vm:SettingViewModel">
     
-    <Grid RowDefinitions="Auto, *" Margin="20">
+    <Grid RowDefinitions="Auto, *, Auto" Margin="20">
         <TextBlock Classes="h2" Text="{x:Static localization:Resources.KEY_SETTINGS}"/>
         
         
         <ScrollViewer Grid.Row="1">
-            <Grid RowDefinitions="Auto, Auto, Auto">
+            
+        <Grid RowDefinitions="Auto, Auto, Auto">
                 <Grid.Styles>
                     <Style Selector="controls|GlassCard">
                         <Setter Property="Margin" Value="0, 10"></Setter>
@@ -29,10 +30,10 @@
                                   Width="256"
                                   HorizontalAlignment="Left"
                                   ItemsSource="{Binding SupportLanguages}" 
-                                  SelectedItem="{Binding SelectedLanguageItem}">
+                                  SelectedItem="{Binding SelectedLanguage}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate DataType="vm:Language">
-                                    <TextBlock Text="{Binding DisplayName}"></TextBlock>
+                                    <TextBlock Tag="{Binding Code}" Text="{Binding DisplayName}"></TextBlock>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
@@ -42,8 +43,12 @@
                 <controls:GlassCard Grid.Row="1">
                     <controls:GroupBox Header="{x:Static localization:Resources.KEY_USER_API}">
                         <Grid ColumnDefinitions="*, Auto">
-                            <TextBox Text="{Binding UserApiKey}"/>
-                            <Button Grid.Column="1" Classes="Basic">
+                            <TextBox Text="{Binding UserApiKey}"
+                                     Foreground="{Binding FontColor}"/>
+                            <Button Grid.Column="1" 
+                                    Classes="Basic" 
+                                    IsVisible="{Binding HasUserApiKey}"
+                                    Command="{Binding CheckUserApiCommand}">
                                 <avalonia:MaterialIcon Kind="Check" />
                             </Button>
                         </Grid>
@@ -63,7 +68,16 @@
                     </controls:GroupBox>
                 </controls:GlassCard>
             </Grid>
+            
         </ScrollViewer>
+        
+        <Button Grid.Row="2" 
+                Margin="20, 10" 
+                Classes="Flat Button" 
+                HorizontalAlignment="Right"
+                Content="{x:Static localization:Resources.KEY_SAVE_BUTTON}"
+                IsVisible="{Binding HasParamChanged}"
+                Command="{Binding SaveButtonClickedCommand}"/>
     </Grid>
     
 </UserControl>
