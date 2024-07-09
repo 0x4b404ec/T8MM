@@ -21,9 +21,7 @@
         <!-- ToolBar -->
         <Grid Grid.Row="1" VerticalAlignment="Top">
             <Grid ColumnDefinitions="*, Auto">
-                <!-- <StackPanel/> -->
-                <Button Classes="Rounded Flat"
-                        Command="{Binding GetModInfoTestCommand}"></Button>
+                <StackPanel/>
                 <Button Grid.Column="1" Classes="Rounded Flat" 
                         Command="{Binding ModRefreshCommand}"
                         theme:ButtonExtensions.ShowProgress="{Binding IsBusy}"

@@ -29,18 +29,8 @@ public partial class ModViewModel : PageBase
     public ModViewModel(IProtocolService protocolService) : base("Mods", MaterialIconKind.ModeEdit)
     {
         m_protocolService = protocolService;
-        
-        
         _ = ModRefresh();
     }
-
-    [RelayCommand]
-    private async Task GetModInfoTest()
-    {
-        var result = await Ioc.Default.GetRequiredService<IProtocolService>().RetrieveSpecifiedMod("tekken8", 255);
-        Debug.Log($"mod info {result.Name}");
-    }
-    
     
     [RelayCommand]
     private async Task ModRefresh()
@@ -74,7 +64,7 @@ public partial class ModViewModel : PageBase
                     if (info is null || !info.IsDataFromWeb)
                     {
                         //TODO: Display an error tips if response failed.
-                        info = GetInfoFromWeb(fileName).Result;
+                        info = await GetInfoFromWeb(fileName);
                         Debug.Log($"Get info from web {info}");
                         FileUtils.WriteEncryptJsonObjectInFile(infoFilePath, info);
                     }
