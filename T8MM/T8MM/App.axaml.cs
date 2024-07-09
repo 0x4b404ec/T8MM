@@ -44,24 +44,32 @@ public class App : Application
             desktop.MainWindow = splashScreen;
             splashScreen.Show();
 
+            //TODO: Create a queue?
             try
             {
-                splashScreenViewModel.StartupMessage = "Reading Local Config...";
+                splashScreenViewModel.StartupMessage = Localization.Resources.KEY_STARTUP_LOAD_USER_SETTINGS;
                 await Task.Run(() =>
                 {
                     var language = Provider.GetService<IAppSettingService>().AppSettings.Language;
                     Debug.Log($"Settings Language {language}");
                     Localization.Resources.Culture = new CultureInfo(language);
-                    splashScreenViewModel.ProgressValue = 10;
+                    
+                    splashScreenViewModel.ProgressValue = 25;
+                    
                 }, splashScreenViewModel.CancellationToken);
                 
-                splashScreenViewModel.StartupMessage = "Application Initializing...";
+                splashScreenViewModel.StartupMessage = Localization.Resources.KEY_STARTUP_VERIFY_USER_API;
+                await Task.Run(() =>
+                {
+                    var apikey = Provider.GetService<IAppSettingService>().AppSettings.UserApiKey;
+                    if (!string.IsNullOrEmpty(apikey))
+                    {
+                        Provider.GetService<IProtocolService>().Authenticate(apikey);
+                    }
+                    splashScreenViewModel.ProgressValue = 100;
+                }, splashScreenViewModel.CancellationToken);
                 
-                
-                
-                
-                await Task.Delay(2000, splashScreenViewModel.CancellationToken);
-                
+                await Task.Delay(1500, splashScreenViewModel.CancellationToken);
             }   
             catch (Exception e)
             {

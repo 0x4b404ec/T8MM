@@ -98,5 +98,17 @@ namespace T8MM.Localization {
                 return ResourceManager.GetString("KEY_SAVE_BUTTON", resourceCulture);
             }
         }
+        
+        public static string KEY_STARTUP_LOAD_USER_SETTINGS {
+            get {
+                return ResourceManager.GetString("KEY_STARTUP_LOAD_USER_SETTINGS", resourceCulture);
+            }
+        }
+        
+        public static string KEY_STARTUP_VERIFY_USER_API {
+            get {
+                return ResourceManager.GetString("KEY_STARTUP_VERIFY_USER_API", resourceCulture);
+            }
+        }
     }
 }

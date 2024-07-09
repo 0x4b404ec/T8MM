@@ -38,4 +38,10 @@
     <data name="KEY_SAVE_BUTTON" xml:space="preserve">
         <value>保存</value>
     </data>
+    <data name="KEY_STARTUP_LOAD_USER_SETTINGS" xml:space="preserve">
+        <value>加载用户设置中...</value>
+    </data>
+    <data name="KEY_STARTUP_VERIFY_USER_API" xml:space="preserve">
+        <value>验证用户授权...</value>
+    </data>
 </root>

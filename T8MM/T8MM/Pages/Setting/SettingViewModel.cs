@@ -5,19 +5,16 @@
  *          0x4b404ec (https://github.com/0x4b404ec)            *
  ****************************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Avalonia;
 using Material.Icons;
 using Microsoft.Extensions.DependencyInjection;
 using T8MM.Services;
@@ -40,6 +37,7 @@ public partial class SettingViewModel : PageBase
     ];
     
     [ObservableProperty] private string? m_userApiKey;
+    [ObservableProperty] private SolidColorBrush m_fontColor;
     [ObservableProperty] private bool m_hasUserApiKey;
     
     [ObservableProperty] private int? m_selectedLanguageIndex;
@@ -49,17 +47,20 @@ public partial class SettingViewModel : PageBase
     [ObservableProperty] private bool m_hasParamChanged;
     
     private IAppSettingService m_appSettingService;
+    private IProtocolService m_protocolService;
     
     public SettingViewModel() : base("Settings", MaterialIconKind.Settings)
     {
         m_appSettingService = App.Provider.GetService<IAppSettingService>();
-
+        m_protocolService = App.Provider.GetService<IProtocolService>();
+        
         if (m_appSettingService != null)
         {
             SelectedLanguageIndex = m_appSettingService.AppSettings.Language;
             UserApiKey = m_appSettingService.AppSettings.UserApiKey;
             HasUserApiKey = !string.IsNullOrEmpty(m_userApiKey);
             GameRootFolder = m_appSettingService.AppSettings.GamePath;
+            // FontColor = m_protocolService.IsValidatedUser ?  : 
         }
     }
 
@@ -88,6 +89,12 @@ public partial class SettingViewModel : PageBase
          HasParamChanged = m_appSettingService.AppSettings.Language != SelectedLanguageIndex ||
                            m_appSettingService.AppSettings.GamePath != GameRootFolder ||
                            m_appSettingService.AppSettings.UserApiKey != UserApiKey;
+    }
+
+    [RelayCommand]
+    private void CheckUserApi()
+    {
+        
     }
     
     [RelayCommand]

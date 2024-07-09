@@ -38,4 +38,10 @@
     <data name="KEY_SAVE_BUTTON" xml:space="preserve">
         <value>Save</value>
     </data>
+    <data name="KEY_STARTUP_LOAD_USER_SETTINGS" xml:space="preserve">
+        <value>Load User Settings...</value>
+    </data>
+    <data name="KEY_STARTUP_VERIFY_USER_API" xml:space="preserve">
+        <value>Verify user authorization</value>
+    </data>
 </root>

@@ -43,8 +43,12 @@
                 <controls:GlassCard Grid.Row="1">
                     <controls:GroupBox Header="{x:Static localization:Resources.KEY_USER_API}">
                         <Grid ColumnDefinitions="*, Auto">
-                            <TextBox Text="{Binding UserApiKey}"/>
-                            <Button Grid.Column="1" Classes="Basic" IsVisible="{Binding HasUserApiKey}">
+                            <TextBox Text="{Binding UserApiKey}"
+                                     Foreground="{Binding FontColor}"/>
+                            <Button Grid.Column="1" 
+                                    Classes="Basic" 
+                                    IsVisible="{Binding HasUserApiKey}"
+                                    Command="{Binding CheckUserApiCommand}">
                                 <avalonia:MaterialIcon Kind="Check" />
                             </Button>
                         </Grid>

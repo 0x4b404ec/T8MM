@@ -15,11 +15,10 @@
       
       <Grid RowDefinitions="*,Auto,Auto">
             <Image VerticalAlignment="Center" Width="400" Grid.Row="0" Source="avares://T8MM/Assets/tekken_8_logo.png"/>
-            <TextBlock Grid.Row="1" Text="{Binding StartupMessage}"/>
-            <ProgressBar Grid.Row="2" Margin="20" Value="{Binding ProgressValue}" IsIndeterminate="False"/>
-              
+            
+            <TextBlock Grid.Row="1" Margin="30, 0" Classes="Primary" Text="{Binding StartupMessage}"/>
+            
+            <ProgressBar Grid.Row="2"  Margin="20, 10" Value="{Binding ProgressValue}" IsIndeterminate="False"/>
       </Grid>
-      
-      
         
 </suki:SukiWindow>
