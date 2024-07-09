@@ -13,10 +13,6 @@
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-  
-    <Application.Resources>
-        <utils:ImageUtils x:Key="ImageUrlToSourceConverter"/>
-    </Application.Resources>
              
     <Application.Styles>
         <sukiUi:SukiTheme ThemeColor="Blue"/>
