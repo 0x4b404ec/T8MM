@@ -69,16 +69,8 @@ public partial class ModInfoResult : ObservableObject
     #region local cache
 
     [ObservableProperty] private bool m_isDataFromWeb;
+    
+    public string ModProfileUrl => $"https://www.nexusmods.com/tekken8/mods/{m_modId}";
 
     #endregion
-
-
-    [RelayCommand]
-    private void OpenModProfilePage(string modId)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            Process.Start($"https://nexusmods.com/tekken8/mods/{modId}");
-        });
-    }
 }
