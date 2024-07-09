@@ -31,7 +31,7 @@ public partial class ModViewModel : PageBase
         m_protocolService = protocolService;
         
         
-        //_ = ModRefresh();
+        _ = ModRefresh();
     }
 
     [RelayCommand]
@@ -100,11 +100,11 @@ public partial class ModViewModel : PageBase
         ModInfoResult? ret = new();
         ModUtils.GetBasicInfoByPackage(fileName, out string modName, out int id, out string version, out string updateTime);
 
-        var result = Ioc.Default.GetRequiredService<IProtocolService>().RetrieveSpecifiedMod("tekken8", id);
+        var result = await Ioc.Default.GetRequiredService<IProtocolService>().RetrieveSpecifiedMod("tekken8", id);
 
-        if (result.Result is not null)
+        if (result is not null)
         {
-            ret = result.Result;
+            ret = result;
             ret.IsDataFromWeb = true;
         }
         else
