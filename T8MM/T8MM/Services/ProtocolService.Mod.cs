@@ -6,12 +6,17 @@
  ****************************************************************/
 
 using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
-using T8MM.Utils;
+using Debug = T8MM.Utils.Debug;
 
 namespace T8MM.Services;
 
@@ -66,4 +71,14 @@ public partial class ModInfoResult : ObservableObject
     [ObservableProperty] private bool m_isDataFromWeb;
 
     #endregion
+
+
+    [RelayCommand]
+    private void OpenModProfilePage(string modId)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            Process.Start($"https://nexusmods.com/tekken8/mods/{modId}");
+        });
+    }
 }
