@@ -5,6 +5,7 @@
  *          0x4b404ec (https://github.com/0x4b404ec)            *
  ****************************************************************/
 
+using Newtonsoft.Json;
 using T8MM.Global;
 using T8MM.Models;
 using T8MM.Utils;
@@ -18,6 +19,8 @@ public interface IAppSettingService
     public void Save();
 
     public void Load();
+
+    public string ToString();
 }
 
 public class AppSettingService : IAppSettingService
@@ -26,6 +29,11 @@ public class AppSettingService : IAppSettingService
     public void Save()
     {
         FileUtils.WriteEncryptJsonObjectInFile(Constants.UserSettingFilePath, AppSettings);
+    }
+
+    public override string ToString()
+    {
+        return JsonConvert.SerializeObject(AppSettings);
     }
 
     public void Load()

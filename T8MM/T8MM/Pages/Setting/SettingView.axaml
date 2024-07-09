@@ -30,7 +30,7 @@
                                   Width="256"
                                   HorizontalAlignment="Left"
                                   ItemsSource="{Binding SupportLanguages}" 
-                                  SelectedIndex="{Binding SelectedLanguageIndex}">
+                                  SelectedItem="{Binding SelectedLanguage}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate DataType="vm:Language">
                                     <TextBlock Tag="{Binding Code}" Text="{Binding DisplayName}"></TextBlock>

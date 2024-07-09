@@ -4,6 +4,7 @@
     <option name="projectPerEditor">
       <map>
         <entry key="T8MM/App.axaml" value="T8MM/T8MM.csproj" />
+        <entry key="T8MM/Pages/Mod/ModItem.axaml" value="T8MM/T8MM.csproj" />
         <entry key="T8MM/Pages/Mod/ModItemTemplatedControl.axaml" value="T8MM/T8MM.csproj" />
         <entry key="T8MM/Pages/Mod/ModView.axaml" value="T8MM/T8MM.csproj" />
         <entry key="T8MM/Pages/Setting/SettingView.axaml" value="T8MM/T8MM.csproj" />

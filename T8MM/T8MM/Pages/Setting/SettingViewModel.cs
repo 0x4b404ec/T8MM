@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -15,6 +16,7 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Avalonia;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Material.Icons;
 using Microsoft.Extensions.DependencyInjection;
 using T8MM.Services;
@@ -36,13 +38,14 @@ public partial class SettingViewModel : PageBase
         new Language("English(US)", "en-us")
     ];
     
-    [ObservableProperty] private string? m_userApiKey;
+    
+    [ObservableProperty] private string m_userApiKey;
     [ObservableProperty] private SolidColorBrush m_fontColor;
     [ObservableProperty] private bool m_hasUserApiKey;
-    
-    [ObservableProperty] private int? m_selectedLanguageIndex;
 
-    [ObservableProperty] private string? m_gameRootFolder;
+    [ObservableProperty] private Language m_selectedLanguage;
+
+    [ObservableProperty] private string m_gameRootFolder;
 
     [ObservableProperty] private bool m_hasParamChanged;
     
@@ -51,22 +54,26 @@ public partial class SettingViewModel : PageBase
     
     public SettingViewModel() : base("Settings", MaterialIconKind.Settings)
     {
-        m_appSettingService = App.Provider.GetService<IAppSettingService>();
-        m_protocolService = App.Provider.GetService<IProtocolService>();
+        m_appSettingService = Ioc.Default.GetRequiredService<IAppSettingService>();
+        m_protocolService = Ioc.Default.GetRequiredService<IProtocolService>();
         
         if (m_appSettingService != null)
         {
-            SelectedLanguageIndex = m_appSettingService.AppSettings.Language;
+            Debug.Log($"AppSettings: {m_appSettingService.ToString()}");
+            SelectedLanguage =
+                SupportLanguages.FirstOrDefault(l => l.Code.Equals(m_appSettingService.AppSettings.Language)) ??
+                SupportLanguages[1];
             UserApiKey = m_appSettingService.AppSettings.UserApiKey;
+            Debug.Log($"UserApiKey {Ioc.Default.GetRequiredService<IProtocolService>().IsValidatedUser}\n {UserApiKey}");
             HasUserApiKey = !string.IsNullOrEmpty(m_userApiKey);
             GameRootFolder = m_appSettingService.AppSettings.GamePath;
-            // FontColor = m_protocolService.IsValidatedUser ?  : 
+            FontColor = Ioc.Default.GetRequiredService<IProtocolService>().IsValidatedUser ? new SolidColorBrush(Colors.LightGreen) : new SolidColorBrush(Colors.OrangeRed);
         }
     }
 
-    partial void OnSelectedLanguageIndexChanged(int? value)
+    partial void OnSelectedLanguageChanged(Language value)
     {
-        Debug.Log($"OnSelectedLanguageItemChanged {value}");
+        Debug.Log($"OnSelectedLanguageChanged {value.DisplayName} {value.Code}");
         CheckHasParamChanged();
     }
 
@@ -75,7 +82,7 @@ public partial class SettingViewModel : PageBase
         Debug.Log($"OnUserApiKeyChanged {value}");
         CheckHasParamChanged();
         // TODO : Check with protocol
-        HasUserApiKey = !string.IsNullOrEmpty(m_userApiKey);
+        HasUserApiKey = !string.IsNullOrEmpty(UserApiKey);
     }
     
     partial void OnGameRootFolderChanged(string? value)
@@ -86,7 +93,7 @@ public partial class SettingViewModel : PageBase
 
     private void CheckHasParamChanged()
     {
-         HasParamChanged = m_appSettingService.AppSettings.Language != SelectedLanguageIndex ||
+         HasParamChanged = m_appSettingService.AppSettings.Language != SelectedLanguage.Code ||
                            m_appSettingService.AppSettings.GamePath != GameRootFolder ||
                            m_appSettingService.AppSettings.UserApiKey != UserApiKey;
     }
@@ -100,7 +107,7 @@ public partial class SettingViewModel : PageBase
     [RelayCommand]
     private void SaveButtonClicked()
     {
-        m_appSettingService.AppSettings.Language = SelectedLanguageIndex.Value;
+        m_appSettingService.AppSettings.Language = SelectedLanguage.Code;
         m_appSettingService.AppSettings.GamePath = GameRootFolder;
         m_appSettingService.AppSettings.UserApiKey = UserApiKey;
         m_appSettingService.Save();

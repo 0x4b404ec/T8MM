@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using T8MM.Pages;
 using T8MM.Pages.Splash;
@@ -18,22 +19,19 @@ namespace T8MM;
 
 public class App : Application
 {
-    private const string DOMAIN = "https://api.nexusmods.com";
-
     private const string API_KEY = "w0nX2W12v7eSd9Q2VbDqOFPacvl0vRYkduur+/8l4+DEYvs=--5dDZNKVaYSndbkP5--aCMUTPQjI/UolxlVL6uCdQ==";
     
-    public static IServiceProvider? Provider;
+    private IServiceProvider? m_provider;
     
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        
-        Provider = ConfigureServices();
     }
 
     public override async void OnFrameworkInitializationCompleted()
     {
-        
+        m_provider = ConfigureServices();
+        Ioc.Default.ConfigureServices(m_provider);
         
         Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
         
@@ -44,13 +42,17 @@ public class App : Application
             desktop.MainWindow = splashScreen;
             splashScreen.Show();
 
+            var appSetting = Ioc.Default.GetRequiredService<IAppSettingService>();
+            var protocol = Ioc.Default.GetRequiredService<IProtocolService>();
+            protocol.Initialize();
+            
             //TODO: Create a queue?
             try
             {
                 splashScreenViewModel.StartupMessage = Localization.Resources.KEY_STARTUP_LOAD_USER_SETTINGS;
                 await Task.Run(() =>
                 {
-                    var language = Provider.GetService<IAppSettingService>().AppSettings.Language;
+                    var language =  appSetting.AppSettings.Language;
                     Debug.Log($"Settings Language {language}");
                     Localization.Resources.Culture = new CultureInfo(language);
                     
@@ -61,10 +63,15 @@ public class App : Application
                 splashScreenViewModel.StartupMessage = Localization.Resources.KEY_STARTUP_VERIFY_USER_API;
                 await Task.Run(() =>
                 {
-                    var apikey = Provider.GetService<IAppSettingService>().AppSettings.UserApiKey;
+                    var apikey =  appSetting.AppSettings.UserApiKey;
                     if (!string.IsNullOrEmpty(apikey))
                     {
-                        Provider.GetService<IProtocolService>().Authenticate(apikey);
+                        var result =  protocol.Authenticate(apikey);
+                        if (result.Result is not null)
+                        {
+                            protocol.IsValidatedUser = true;
+                            Debug.Log($"123 {protocol.IsValidatedUser}");
+                        }
                     }
                     splashScreenViewModel.ProgressValue = 100;
                 }, splashScreenViewModel.CancellationToken);
@@ -77,8 +84,8 @@ public class App : Application
                 return;
             }
             
-            var viewLocalor = Provider?.GetRequiredService<IDataTemplate>();
-            var mainViewModel = Provider?.GetRequiredService<T8MMViewModel>();
+            var viewLocalor = m_provider?.GetRequiredService<IDataTemplate>();
+            var mainViewModel = m_provider?.GetRequiredService<T8MMViewModel>();
 
             desktop.MainWindow = viewLocalor?.Build(mainViewModel) as Window;
             desktop.MainWindow.Show();
@@ -97,7 +104,7 @@ public class App : Application
         services.AddSingleton<IAppSettingService, AppSettingService>();
         
         // Protocol
-        services.AddHttpClient<IProtocolService, ProtocolService>(httpClient => httpClient.BaseAddress = new Uri(DOMAIN));
+        services.AddSingleton<IProtocolService, ProtocolService>();
         
         // Services
         if (viewLocator is not null)

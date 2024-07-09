@@ -30,7 +30,7 @@ public partial class ProtocolService
         
         Debug.Assert(Initialized, $"Protocol not initialized!");
         
-        var response = await client.GetAsync(suburl);
+        var response = await m_client.GetAsync(suburl);
 
         var content = await response.Content.ReadAsStringAsync();
         

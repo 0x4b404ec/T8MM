@@ -11,7 +11,7 @@ public class AppSettingDataModel
 {
     public string UserApiKey = "";
 
-    public int Language = 1;
+    public string Language = "en-us";
 
     public string GamePath = "";
 

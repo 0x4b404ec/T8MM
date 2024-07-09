@@ -24,14 +24,13 @@ public partial class ProtocolService
     public async Task<UserInfoResult?> Authenticate(string apikey)
     {
         // if (!client.DefaultRequestHeaders.Contains("apikey"))
-            client.DefaultRequestHeaders.Add("apikey", apikey);
+        m_client.DefaultRequestHeaders.Add("apikey", apikey);
         
-        var response = await client?.GetAsync(CHECKS_API_VALID_REQUEST);
+        var response = await m_client.GetAsync(CHECKS_API_VALID_REQUEST);
         var content = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)
         {
             Debug.Log($"{this} User Validated");
-            
             IsValidatedUser = true;
             return JsonConvert.DeserializeObject<UserInfoResult>(content);
         }
