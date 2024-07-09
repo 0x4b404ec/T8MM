@@ -8,7 +8,7 @@
              xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
              xmlns:localization="using:T8MM.Localization"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="T8MM.Pages.Mod.ModView"
              x:DataType="vm:ModViewModel">
@@ -38,6 +38,7 @@
                             <controls:GlassCard Margin="0, 10" IsInteractive="True">
                                 <controls:GroupBox Header="{Binding Name}">
                                     <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
+                                        <Image asyncImageLoader:ImageLoader.Source="{Binding PictureUrl}" />
                                         <TextBlock Grid.Column="1" Text="{Binding Author}"/>    
                                     </Grid>
                                 </controls:GroupBox>
