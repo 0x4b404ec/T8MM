@@ -44,12 +44,12 @@ public partial class ModInfoResult : ObservableObject
 {
     #region response fields
     
-    [JsonProperty("uid"), ObservableProperty] private int m_uid;
-    [JsonProperty("mod_id"), ObservableProperty] private int m_modId;
-    [JsonProperty("author"), ObservableProperty] private int m_author;
-    [JsonProperty("uploaded_users_profile_url"), ObservableProperty] private int m_uploadedUsersProfileUrl;
-    [JsonProperty("domain_name"), ObservableProperty] private int m_domainName;
-    [JsonProperty("game_id"), ObservableProperty] private int m_gameId;
+    [JsonProperty("uid"), ObservableProperty] private long m_uid;
+    [JsonProperty("mod_id"), ObservableProperty] private long m_modId;
+    [JsonProperty("author"), ObservableProperty] private string m_author;
+    [JsonProperty("uploaded_users_profile_url"), ObservableProperty] private string m_uploadedUsersProfileUrl;
+    [JsonProperty("domain_name"), ObservableProperty] private string m_domainName;
+    [JsonProperty("game_id"), ObservableProperty] private long m_gameId;
     [JsonProperty("name"), ObservableProperty] private string m_name;
     [JsonProperty("summary"), ObservableProperty] private string m_summary;
     [JsonProperty("description"), ObservableProperty] private string m_description;
