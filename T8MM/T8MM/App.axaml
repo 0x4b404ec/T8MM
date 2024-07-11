@@ -3,9 +3,8 @@
              x:Class="T8MM.App"
              xmlns:local="using:T8MM"
              
-             xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
+             xmlns:sty="using:FluentAvalonia.Styling"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             xmlns:utils="clr-namespace:T8MM.Utils"
 
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
@@ -15,9 +14,8 @@
     </Application.DataTemplates>
              
     <Application.Styles>
-        <sukiUi:SukiTheme ThemeColor="Blue"/>
+        <sty:FluentAvaloniaTheme />
         <avalonia:MaterialIconStyles />
-        
         
         <!-- <FluentTheme /> -->
     </Application.Styles>
